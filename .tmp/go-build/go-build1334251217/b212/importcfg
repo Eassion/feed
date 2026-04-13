@@ -1,0 +1,5 @@
+# import config
+packagefile context=d:\Projects\go\feed\.tmp\go-cache\aa\aa34eac980d80e30376c5c955854dd5382431271eed2e73542ecbdb25d54c6c2-d
+packagefile errors=d:\Projects\go\feed\.tmp\go-cache\65\65670194b2e0e91ed005e66bf1a654b0b7fafe65e801062748faebd1bd2e2ef4-d
+packagefile feed/internal/config=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b046\_pkg_.a
+packagefile github.com/redis/go-redis/v9=d:\Projects\go\feed\.tmp\go-cache\3e\3e3ee0452f3b2798d1ca314f62e2495462104dd259d63d68719a4eb49f06181d-d

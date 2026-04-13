@@ -1,0 +1,27 @@
+app:
+  name: ran-feed-server
+  http_addr: ":8080"
+
+mysql:
+  enabled: true
+  dsn: "root:root@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
+  max_open_conns: 20
+  max_idle_conns: 10
+  conn_max_lifetime: 30m
+
+redis:
+  enabled: true
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
+
+jwt:
+  secret: "change-me-in-production"
+  issuer: "ran-feed-server"
+  expire: 72h
+
+kafka:
+  enabled: false
+  brokers:
+    - "127.0.0.1:9092"
+  group_id: "ran-feed-server"

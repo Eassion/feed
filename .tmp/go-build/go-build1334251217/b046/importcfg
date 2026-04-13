@@ -1,0 +1,8 @@
+# import config
+packagefile errors=d:\Projects\go\feed\.tmp\go-cache\65\65670194b2e0e91ed005e66bf1a654b0b7fafe65e801062748faebd1bd2e2ef4-d
+packagefile fmt=d:\Projects\go\feed\.tmp\go-cache\7a\7ae7a5a2bd01fc61bc47b963c5fe58351d0d5d5fae41127e43eaa6c1863dea2f-d
+packagefile gopkg.in/yaml.v3=d:\Projects\go\feed\.tmp\go-cache\16\1650340993b998515208d6f664d55d69242797c08d05ed4e5749fb22ce5946a9-d
+packagefile os=d:\Projects\go\feed\.tmp\go-cache\63\638e0fe30a12b1c9fa03b023eecc17391ced10f4567de278a3a34bb656015738-d
+packagefile path/filepath=d:\Projects\go\feed\.tmp\go-cache\79\794a6378303a2aa96dfc87c1f6c281d5a731aa8b35de867e1f5cffb208dcff5b-d
+packagefile strings=d:\Projects\go\feed\.tmp\go-cache\85\85e483c876a41b97e6a29f8e8c127eaec39ff8c68fa3a53ac90ce7e597ba6ef0-d
+packagefile time=d:\Projects\go\feed\.tmp\go-cache\49\49ffe9f35a229550364f6eadd77be9abdbb3b63fa801da4991a188593573cfc5-d

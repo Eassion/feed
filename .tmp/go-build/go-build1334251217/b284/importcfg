@@ -1,0 +1,6 @@
+# import config
+packagefile context=d:\Projects\go\feed\.tmp\go-cache\aa\aa34eac980d80e30376c5c955854dd5382431271eed2e73542ecbdb25d54c6c2-d
+packagefile database/sql=d:\Projects\go\feed\.tmp\go-cache\63\6344032d1ccd86dd0b907ff64785232afed29225f0ed84602a0d54494b111d18-d
+packagefile errors=d:\Projects\go\feed\.tmp\go-cache\65\65670194b2e0e91ed005e66bf1a654b0b7fafe65e801062748faebd1bd2e2ef4-d
+packagefile feed/internal/config=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b046\_pkg_.a
+packagefile github.com/go-sql-driver/mysql=d:\Projects\go\feed\.tmp\go-cache\5b\5b45e790b715b2c8c400b0999a64a7ea8eb3d361a527918258daa641f8488ca0-d

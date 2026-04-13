@@ -1,0 +1,10 @@
+# import config
+packagefile encoding/json=d:\Projects\go\feed\.tmp\go-cache\e6\e6440d3ce7386f3d9b1035226c6151a742e67daed479ed17f054faae07268d59-d
+packagefile errors=d:\Projects\go\feed\.tmp\go-cache\65\65670194b2e0e91ed005e66bf1a654b0b7fafe65e801062748faebd1bd2e2ef4-d
+packagefile feed/internal/middleware=d:\Projects\go\feed\.tmp\go-cache\3f\3f8b9a973dcd4bc4f2d6aa5bbc3f0800cbf6172e99e840f99a5918442da0ed8b-d
+packagefile feed/internal/service/feed=d:\Projects\go\feed\.tmp\go-cache\bd\bdc4ba29f7d99b67aad1cec62ce1f92cbe4d543a370add35f7e31a36bc10fe4a-d
+packagefile feed/internal/service/user=d:\Projects\go\feed\.tmp\go-cache\23\23940476a59c3c1c94afde82033c55a50e0550db2939c17485a349ec63580730-d
+packagefile feed/internal/svc=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b211\_pkg_.a
+packagefile log/slog=d:\Projects\go\feed\.tmp\go-cache\fa\facf40c83a8f2bf624dd2bc684813604b9e5bca6c0b0fa28b4f456631fac830b-d
+packagefile net/http=d:\Projects\go\feed\.tmp\go-cache\75\75b21945f1747db3fda278d07e4314251454bb66b838b50dc780d97eabe8f264-d
+packagefile strconv=d:\Projects\go\feed\.tmp\go-cache\fe\fe39103bd5dd76aca3413e1565f4f9c8a8af17ae439a6a5bd901e0471892c67e-d

@@ -1,0 +1,14 @@
+# import config
+packagefile context=d:\Projects\go\feed\.tmp\go-cache\aa\aa34eac980d80e30376c5c955854dd5382431271eed2e73542ecbdb25d54c6c2-d
+packagefile database/sql=d:\Projects\go\feed\.tmp\go-cache\63\6344032d1ccd86dd0b907ff64785232afed29225f0ed84602a0d54494b111d18-d
+packagefile feed/internal/cache=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b212\_pkg_.a
+packagefile feed/internal/config=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b046\_pkg_.a
+packagefile feed/internal/mq=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b213\_pkg_.a
+packagefile feed/internal/repository=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b284\_pkg_.a
+packagefile feed/internal/repository/feed=d:\Projects\go\feed\.tmp\go-cache\42\429b93d060a7b6de10c70ab17c7f45a73d9e9e27914b51c814b2eef0c7f3ba72-d
+packagefile feed/internal/repository/user=d:\Projects\go\feed\.tmp\go-cache\ee\ee45bc9af3881401c8ca02b7aa8f101406631adbed03ac469617b3cd3f7b2b44-d
+packagefile feed/internal/service/feed=d:\Projects\go\feed\.tmp\go-cache\bd\bdc4ba29f7d99b67aad1cec62ce1f92cbe4d543a370add35f7e31a36bc10fe4a-d
+packagefile feed/internal/service/user=d:\Projects\go\feed\.tmp\go-cache\23\23940476a59c3c1c94afde82033c55a50e0550db2939c17485a349ec63580730-d
+packagefile feed/pkg/jwtutil=d:\Projects\go\feed\.tmp\go-cache\3b\3b8e1faddbf427b3e918cc0d9e510f8be9566487733c8eed8802b2893f2d62a8-d
+packagefile github.com/redis/go-redis/v9=d:\Projects\go\feed\.tmp\go-cache\3e\3e3ee0452f3b2798d1ca314f62e2495462104dd259d63d68719a4eb49f06181d-d
+packagefile log/slog=d:\Projects\go\feed\.tmp\go-cache\fa\facf40c83a8f2bf624dd2bc684813604b9e5bca6c0b0fa28b4f456631fac830b-d

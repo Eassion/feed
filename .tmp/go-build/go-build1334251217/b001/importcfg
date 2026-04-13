@@ -1,0 +1,13 @@
+# import config
+packagefile context=d:\Projects\go\feed\.tmp\go-cache\aa\aa34eac980d80e30376c5c955854dd5382431271eed2e73542ecbdb25d54c6c2-d
+packagefile errors=d:\Projects\go\feed\.tmp\go-cache\65\65670194b2e0e91ed005e66bf1a654b0b7fafe65e801062748faebd1bd2e2ef4-d
+packagefile feed/internal/config=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b046\_pkg_.a
+packagefile feed/internal/handler=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b075\_pkg_.a
+packagefile feed/internal/svc=d:\Projects\go\feed\.tmp\go-build\go-build1334251217\b211\_pkg_.a
+packagefile log/slog=d:\Projects\go\feed\.tmp\go-cache\fa\facf40c83a8f2bf624dd2bc684813604b9e5bca6c0b0fa28b4f456631fac830b-d
+packagefile net/http=d:\Projects\go\feed\.tmp\go-cache\75\75b21945f1747db3fda278d07e4314251454bb66b838b50dc780d97eabe8f264-d
+packagefile os=d:\Projects\go\feed\.tmp\go-cache\63\638e0fe30a12b1c9fa03b023eecc17391ced10f4567de278a3a34bb656015738-d
+packagefile os/signal=d:\Projects\go\feed\.tmp\go-cache\23\2301ad08356dfa9724bd2d693e84ba7282f82835bb40765e52dcb1dcf4765f4a-d
+packagefile syscall=d:\Projects\go\feed\.tmp\go-cache\df\df3c2f12b2b4e776410fa27e149698de6d69ab9a2d6e0df308c23dd5dc20e0fc-d
+packagefile time=d:\Projects\go\feed\.tmp\go-cache\49\49ffe9f35a229550364f6eadd77be9abdbb3b63fa801da4991a188593573cfc5-d
+packagefile runtime=d:\Projects\go\feed\.tmp\go-cache\b8\b8704d1a1ee85e3bd892a8c841002e0fdb45e64ff636357c91edb8b423c6d50f-d
