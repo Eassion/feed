@@ -39,6 +39,7 @@ func (s *SessionStore) Save(ctx context.Context, token string, userID int64) err
 		return err
 	}
 
+	//事务式更新，确保旧token和新token的一致性
 	pipe := s.client.TxPipeline()
 	if oldToken != "" && oldToken != token {
 		pipe.Del(ctx, UserSessionTokenKey(oldToken))

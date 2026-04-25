@@ -13,15 +13,28 @@ import (
 
 type Config struct {
 	App   AppConfig   `yaml:"app"`
+	Cron  CronConfig  `yaml:"cron"`
 	MySQL MySQLConfig `yaml:"mysql"`
 	Redis RedisConfig `yaml:"redis"`
 	JWT   JWTConfig   `yaml:"jwt"`
 	Kafka KafkaConfig `yaml:"kafka"`
+	Canal CanalConfig `yaml:"canal"`
 }
 
 type AppConfig struct {
 	Name     string `yaml:"name"`
 	HTTPAddr string `yaml:"http_addr"`
+}
+
+type CronConfig struct {
+	Enabled                     bool          `yaml:"enabled"`
+	HotSnapshotInterval         time.Duration `yaml:"hot_snapshot_interval"`
+	HotSnapshotSize             int64         `yaml:"hot_snapshot_size"`
+	HotSnapshotTTL              time.Duration `yaml:"hot_snapshot_ttl"`
+	HotColdUpdateInterval       time.Duration `yaml:"hot_cold_update_interval"`
+	HotColdUpdateSize           int64         `yaml:"hot_cold_update_size"`
+	FollowInboxBackfillInterval time.Duration `yaml:"follow_inbox_backfill_interval"`
+	FollowInboxBatchSize        int           `yaml:"follow_inbox_batch_size"`
 }
 
 type MySQLConfig struct {
@@ -46,9 +59,28 @@ type JWTConfig struct {
 }
 
 type KafkaConfig struct {
-	Enabled bool     `yaml:"enabled"`
-	Brokers []string `yaml:"brokers"`
-	GroupID string   `yaml:"group_id"`
+	Enabled bool              `yaml:"enabled"`
+	Brokers []string          `yaml:"brokers"`
+	GroupID string            `yaml:"group_id"`
+	Topics  KafkaTopicsConfig `yaml:"topics"`
+}
+
+type CanalConfig struct {
+	Enabled           bool          `yaml:"enabled"`
+	Addr              string        `yaml:"addr"`
+	Username          string        `yaml:"username"`
+	Password          string        `yaml:"password"`
+	Destination       string        `yaml:"destination"`
+	Subscribe         string        `yaml:"subscribe"`
+	BatchSize         int           `yaml:"batch_size"`
+	PollInterval      time.Duration `yaml:"poll_interval"`
+	ReconnectInterval time.Duration `yaml:"reconnect_interval"`
+	DedupeTTL         time.Duration `yaml:"dedupe_ttl"`
+}
+
+type KafkaTopicsConfig struct {
+	CountCanal string `yaml:"count_canal"`
+	LikeAction string `yaml:"like_action"`
 }
 
 func Load() (Config, error) {
@@ -77,6 +109,16 @@ func defaultConfig() Config {
 			Name:     "ran-feed-server",
 			HTTPAddr: ":8080",
 		},
+		Cron: CronConfig{
+			Enabled:                     true,
+			HotSnapshotInterval:         1 * time.Minute,
+			HotSnapshotSize:             1000,
+			HotSnapshotTTL:              30 * time.Minute,
+			HotColdUpdateInterval:       24 * time.Hour,
+			HotColdUpdateSize:           5000,
+			FollowInboxBackfillInterval: 5 * time.Minute,
+			FollowInboxBatchSize:        200,
+		},
 		MySQL: MySQLConfig{
 			MaxOpenConns:    20,
 			MaxIdleConns:    10,
@@ -92,6 +134,18 @@ func defaultConfig() Config {
 		},
 		Kafka: KafkaConfig{
 			GroupID: "ran-feed-server",
+			Topics: KafkaTopicsConfig{
+				CountCanal: "ran-feed-count-canal",
+				LikeAction: "ran-feed-like-action",
+			},
+		},
+		Canal: CanalConfig{
+			Destination:       "example",
+			Subscribe:         ".*\\.(ran_feed_like|ran_feed_favorite|ran_feed_comment|ran_feed_follow|ran_feed_content)",
+			BatchSize:         100,
+			PollInterval:      300 * time.Millisecond,
+			ReconnectInterval: 3 * time.Second,
+			DedupeTTL:         7 * 24 * time.Hour,
 		},
 	}
 }
@@ -144,6 +198,30 @@ func applyDefaults(cfg *Config) {
 	if cfg.App.HTTPAddr == "" {
 		cfg.App.HTTPAddr = ":8080"
 	}
+	if !cfg.Cron.Enabled {
+		cfg.Cron.Enabled = false
+	}
+	if cfg.Cron.HotSnapshotInterval <= 0 {
+		cfg.Cron.HotSnapshotInterval = 1 * time.Minute
+	}
+	if cfg.Cron.HotSnapshotSize <= 0 {
+		cfg.Cron.HotSnapshotSize = 1000
+	}
+	if cfg.Cron.HotSnapshotTTL <= 0 {
+		cfg.Cron.HotSnapshotTTL = 30 * time.Minute
+	}
+	if cfg.Cron.HotColdUpdateInterval <= 0 {
+		cfg.Cron.HotColdUpdateInterval = 24 * time.Hour
+	}
+	if cfg.Cron.HotColdUpdateSize <= 0 {
+		cfg.Cron.HotColdUpdateSize = 5000
+	}
+	if cfg.Cron.FollowInboxBackfillInterval <= 0 {
+		cfg.Cron.FollowInboxBackfillInterval = 5 * time.Minute
+	}
+	if cfg.Cron.FollowInboxBatchSize <= 0 {
+		cfg.Cron.FollowInboxBatchSize = 200
+	}
 
 	if cfg.MySQL.MaxOpenConns == 0 {
 		cfg.MySQL.MaxOpenConns = 20
@@ -168,8 +246,36 @@ func applyDefaults(cfg *Config) {
 	if cfg.Kafka.GroupID == "" {
 		cfg.Kafka.GroupID = "ran-feed-server"
 	}
+	if cfg.Kafka.Topics.CountCanal == "" {
+		cfg.Kafka.Topics.CountCanal = "ran-feed-count-canal"
+	}
+	if cfg.Kafka.Topics.LikeAction == "" {
+		cfg.Kafka.Topics.LikeAction = "ran-feed-like-action"
+	}
+	if cfg.Canal.Destination == "" {
+		cfg.Canal.Destination = "example"
+	}
+	if cfg.Canal.Subscribe == "" {
+		cfg.Canal.Subscribe = ".*\\.(ran_feed_like|ran_feed_favorite|ran_feed_comment|ran_feed_follow|ran_feed_content)"
+	}
+	if cfg.Canal.BatchSize <= 0 {
+		cfg.Canal.BatchSize = 100
+	}
+	if cfg.Canal.PollInterval <= 0 {
+		cfg.Canal.PollInterval = 300 * time.Millisecond
+	}
+	if cfg.Canal.ReconnectInterval <= 0 {
+		cfg.Canal.ReconnectInterval = 3 * time.Second
+	}
+	if cfg.Canal.DedupeTTL <= 0 {
+		cfg.Canal.DedupeTTL = 7 * 24 * time.Hour
+	}
 
 	cfg.MySQL.DSN = strings.TrimSpace(cfg.MySQL.DSN)
 	cfg.Redis.Addr = strings.TrimSpace(cfg.Redis.Addr)
 	cfg.JWT.Secret = strings.TrimSpace(cfg.JWT.Secret)
+	cfg.Canal.Addr = strings.TrimSpace(cfg.Canal.Addr)
+	cfg.Canal.Username = strings.TrimSpace(cfg.Canal.Username)
+	cfg.Canal.Password = strings.TrimSpace(cfg.Canal.Password)
+	cfg.Canal.Subscribe = strings.TrimSpace(cfg.Canal.Subscribe)
 }

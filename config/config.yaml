@@ -2,6 +2,16 @@ app:
   name: ran-feed-server
   http_addr: ":8080"
 
+cron:
+  enabled: true
+  hot_snapshot_interval: 1m
+  hot_snapshot_size: 1000
+  hot_snapshot_ttl: 30m
+  hot_cold_update_interval: 24h
+  hot_cold_update_size: 5000
+  follow_inbox_backfill_interval: 5m
+  follow_inbox_batch_size: 200
+
 mysql:
   enabled: true
   dsn: "root:root@tcp(localhost:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
@@ -21,7 +31,22 @@ jwt:
   expire: 72h
 
 kafka:
-  enabled: false
+  enabled: true
   brokers:
     - "127.0.0.1:9092"
   group_id: "ran-feed-server"
+  topics:
+    count_canal: "ran-feed-count-canal"
+    like_action: "ran-feed-like-action"
+
+canal:
+  enabled: true
+  addr: "127.0.0.1:11111"
+  username: ""
+  password: ""
+  destination: "example"
+  subscribe: ".*\\.(ran_feed_like|ran_feed_favorite|ran_feed_comment|ran_feed_follow|ran_feed_content)"
+  batch_size: 100
+  poll_interval: 300ms
+  reconnect_interval: 3s
+  dedupe_ttl: 168h

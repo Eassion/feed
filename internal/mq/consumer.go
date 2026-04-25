@@ -2,6 +2,7 @@ package mq
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"log/slog"
 	"sync"
@@ -19,6 +20,8 @@ type Manager struct {
 	logger   *slog.Logger
 	handlers map[string]MessageHandler
 	readers  []*kafka.Reader
+	writers  map[string]*kafka.Writer
+	mu       sync.Mutex
 	wg       sync.WaitGroup
 }
 
@@ -27,6 +30,7 @@ func NewManager(cfg config.KafkaConfig, logger *slog.Logger) *Manager {
 		cfg:      cfg,
 		logger:   logger,
 		handlers: make(map[string]MessageHandler),
+		writers:  make(map[string]*kafka.Writer),
 	}
 }
 
@@ -80,9 +84,56 @@ func (m *Manager) Close() error {
 			firstErr = err
 		}
 	}
+	for _, writer := range m.writers {
+		if err := writer.Close(); err != nil && firstErr == nil {
+			firstErr = err
+		}
+	}
 
 	m.wg.Wait()
 	return firstErr
+}
+
+func (m *Manager) Publish(ctx context.Context, topic, key string, value []byte) error {
+	if m == nil || !m.cfg.Enabled {
+		return nil
+	}
+	if len(m.cfg.Brokers) == 0 {
+		return errors.New("kafka enabled but no brokers configured")
+	}
+
+	m.mu.Lock()
+	writer, ok := m.writers[topic]
+	if !ok {
+		writer = &kafka.Writer{
+			Addr:         kafka.TCP(m.cfg.Brokers...),
+			Topic:        topic,
+			RequiredAcks: kafka.RequireOne,
+			Balancer:     &kafka.Hash{},
+		}
+		m.writers[topic] = writer
+	}
+	m.mu.Unlock()
+
+	return writer.WriteMessages(ctx, kafka.Message{
+		Topic: topic,
+		Key:   []byte(key),
+		Value: value,
+		Time:  time.Now(),
+	})
+}
+
+func (m *Manager) PublishJSON(ctx context.Context, topic, key string, payload any) error {
+	if m == nil || !m.cfg.Enabled {
+		return nil
+	}
+
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	return m.Publish(ctx, topic, key, data)
 }
 
 func (m *Manager) consume(ctx context.Context, reader *kafka.Reader, topic string, handler MessageHandler) {

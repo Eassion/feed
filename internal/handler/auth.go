@@ -25,7 +25,11 @@ type loginRequest struct {
 type registerRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Nickname string `json:"nickname"`
 	Avatar   string `json:"avatar"`
+	Bio      string `json:"bio"`
+	Mobile   string `json:"mobile"`
+	Email    string `json:"email"`
 	Profile  string `json:"profile"`
 }
 
@@ -39,8 +43,11 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	result, err := h.userService.Register(r.Context(), usersvc.RegisterRequest{
 		Username: req.Username,
 		Password: req.Password,
+		Nickname: req.Nickname,
 		Avatar:   req.Avatar,
-		Profile:  req.Profile,
+		Bio:      firstNonEmpty(req.Bio, req.Profile),
+		Mobile:   req.Mobile,
+		Email:    req.Email,
 	})
 	if err != nil {
 		switch {
@@ -59,6 +66,15 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 		"expires_at": result.ExpiresAt,
 		"user":       result.User,
 	})
+}
+
+func firstNonEmpty(values ...string) string {
+	for _, value := range values {
+		if value != "" {
+			return value
+		}
+	}
+	return ""
 }
 
 func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {

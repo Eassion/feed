@@ -25,7 +25,9 @@ func (r *Repository) FindByUsername(ctx context.Context, username string) (*mode
 	}
 
 	user := &model.User{}
-	if err := r.db.WithContext(ctx).Where("username = ?", username).First(user).Error; err != nil {
+	if err := r.db.WithContext(ctx).
+		Where("username = ? AND is_deleted = ? AND status = ?", username, false, model.UserStatusActive).
+		First(user).Error; err != nil {
 		return nil, err
 	}
 
@@ -38,11 +40,29 @@ func (r *Repository) FindByID(ctx context.Context, userID int64) (*model.User, e
 	}
 
 	user := &model.User{}
-	if err := r.db.WithContext(ctx).First(user, userID).Error; err != nil {
+	if err := r.db.WithContext(ctx).
+		Where("id = ? AND is_deleted = ?", userID, false).
+		First(user).Error; err != nil {
 		return nil, err
 	}
 
 	return user, nil
+}
+
+func (r *Repository) BatchFindByIDs(ctx context.Context, userIDs []int64) ([]model.User, error) {
+	if r.db == nil {
+		return nil, ErrRepositoryUnavailable
+	}
+	if len(userIDs) == 0 {
+		return []model.User{}, nil
+	}
+
+	var users []model.User
+	if err := r.db.WithContext(ctx).Where("id IN ? AND is_deleted = ?", userIDs, false).Find(&users).Error; err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
 
 func (r *Repository) Create(ctx context.Context, user *model.User) error {
@@ -50,6 +70,15 @@ func (r *Repository) Create(ctx context.Context, user *model.User) error {
 		return ErrRepositoryUnavailable
 	}
 
+	if user.Nickname == "" {
+		user.Nickname = user.Username
+	}
+	if user.Status == 0 {
+		user.Status = model.UserStatusActive
+	}
+	if user.Version == 0 {
+		user.Version = 1
+	}
 	return r.db.WithContext(ctx).Create(user).Error
 }
 
@@ -63,7 +92,7 @@ func (r *Repository) UpdateProfile(ctx context.Context, userID int64, updates ma
 
 	tx := r.db.WithContext(ctx).
 		Model(&model.User{}).
-		Where("id = ?", userID).
+		Where("id = ? AND is_deleted = ?", userID, false).
 		Updates(updates)
 	if tx.Error != nil {
 		return tx.Error

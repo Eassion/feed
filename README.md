@@ -36,4 +36,24 @@ script
 - `POST /api/v1/auth/logout`
 - `GET /api/v1/users/me`
 - `PUT /api/v1/users/me`
+- `POST /api/v1/users/avatar/upload`
+- `POST /api/v1/contents/articles`
+- `POST /api/v1/contents/videos`
+- `POST /api/v1/contents/upload-credentials`
+- `GET /api/v1/contents/{id}`
+- `GET /api/v1/contents/{id}/comments`
+- `DELETE /api/v1/contents/{id}`
+- `POST /api/v1/uploads/objects`
+- `GET /api/v1/assets/{objectKey...}`
+- `GET /api/v1/users/{userID}/contents`
+- `POST /api/v1/interactions/likes`
+- `DELETE /api/v1/interactions/likes/{contentID}`
+- `POST /api/v1/interactions/favorites`
+- `DELETE /api/v1/interactions/favorites/{contentID}`
+- `POST /api/v1/comments`
+- `DELETE /api/v1/comments/{commentID}`
+- `GET /api/v1/comments/{commentID}/replies`
+- `POST /api/v1/follows`
+- `DELETE /api/v1/follows/{followeeID}`
 - `GET /api/v1/feed/recommend`，支持匿名访问；登录后可携带 `Authorization: Bearer <token>`
+- `GET /api/v1/feed/following`
