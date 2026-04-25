@@ -307,6 +307,7 @@ func (c *CountCanalConsumer) resolveAuthorID(ctx context.Context, event CountCan
 	return 0, err
 }
 
+//根据数据库操作类型决定delta的值：-1，1，0
 func detectDelta(action string, beforeActive, afterActive bool) int64 {
 	switch action {
 	case ActionInsert:
